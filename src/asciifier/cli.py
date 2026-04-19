@@ -10,11 +10,13 @@ from asciifier.renderers.base import RenderOpts
 from asciifier.renderers.block import BlockRenderer
 from asciifier.renderers.braille import BrailleRenderer
 from asciifier.renderers.edge import EdgeRenderer
+from asciifier.renderers.fidelity import FidelityRenderer
 from asciifier.renderers.luminance import LuminanceRenderer
 from asciifier.resample import compute_target_size, resample
 from asciifier.terminal import detect
 
 RENDERERS: dict[str, type] = {
+    "fidelity": FidelityRenderer,
     "luminance": LuminanceRenderer,
     "block": BlockRenderer,
     "braille": BrailleRenderer,
@@ -32,6 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--width", type=int, default=None)
     p.add_argument("--height", type=int, default=None)
     p.add_argument("--invert", action="store_true")
+    p.add_argument("--font", type=Path, default=None, help="custom TTF for fidelity atlas")
     return p
 
 
@@ -72,7 +75,9 @@ def main(argv: list[str] | None = None) -> int:
         width=args.width, height=args.height,
     )
     resized = resample(img, cols=cols, rows=rows)
-    grid = renderer.render(resized, RenderOpts(color_mode=color_mode, invert=args.invert))
+    grid = renderer.render(resized, RenderOpts(
+        color_mode=color_mode, invert=args.invert, font_path=args.font,
+    ))
     out = TerminalEncoder().encode(grid, EncodeOpts())
     sys.stdout.write(out)
     return 0
