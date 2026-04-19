@@ -7,9 +7,15 @@ from asciifier.encoders.base import EncodeOpts
 from asciifier.encoders.terminal import TerminalEncoder
 from asciifier.loader import load_image
 from asciifier.renderers.base import RenderOpts
+from asciifier.renderers.block import BlockRenderer
 from asciifier.renderers.luminance import LuminanceRenderer
 from asciifier.resample import compute_target_size, resample
 from asciifier.terminal import detect
+
+RENDERERS: dict[str, type] = {
+    "luminance": LuminanceRenderer,
+    "block": BlockRenderer,
+}
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -49,11 +55,11 @@ def main(argv: list[str] | None = None) -> int:
 
     color_mode = _resolve_color(args.color, args.mode)
 
-    if args.mode != "luminance":
-        print(f"error: mode '{args.mode}' not yet implemented (MVP)", file=sys.stderr)
+    cls = RENDERERS.get(args.mode)
+    if cls is None:
+        print(f"error: mode '{args.mode}' not yet implemented", file=sys.stderr)
         return 2
-
-    renderer = LuminanceRenderer()
+    renderer = cls()
     caps = detect()
     cols, rows = compute_target_size(
         src_w=img.shape[1], src_h=img.shape[0],
