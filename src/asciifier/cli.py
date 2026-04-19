@@ -8,6 +8,7 @@ from asciifier.encoders.terminal import TerminalEncoder
 from asciifier.loader import load_image
 from asciifier.renderers.base import RenderOpts
 from asciifier.renderers.block import BlockRenderer
+from asciifier.renderers.braille import BrailleRenderer
 from asciifier.renderers.luminance import LuminanceRenderer
 from asciifier.resample import compute_target_size, resample
 from asciifier.terminal import detect
@@ -15,6 +16,7 @@ from asciifier.terminal import detect
 RENDERERS: dict[str, type] = {
     "luminance": LuminanceRenderer,
     "block": BlockRenderer,
+    "braille": BrailleRenderer,
 }
 
 
