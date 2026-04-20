@@ -11,7 +11,7 @@ PRESETS: dict[str, PresetDict] = {
     "photo":    {"mode": "fidelity", "color": "truecolor"},
     "lineart":  {"mode": "edge",     "color": "mono"},
     "pixelart": {"mode": "block",    "color": "truecolor"},
-    "logo":     {"mode": "block",    "color": "truecolor"},
+    "logo":     {"mode": "block",    "color": "mono"},
 }
 
 

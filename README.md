@@ -51,7 +51,7 @@ Common options:
 - `photo` -- max fidelity, truecolor.
 - `lineart` -- edge mode, mono.
 - `pixelart` -- block mode.
-- `logo` -- block mode.
+- `logo` -- block mode, mono (silhouettes).
 
 ### Color
 
