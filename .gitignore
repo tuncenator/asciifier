@@ -21,3 +21,14 @@ venv/
 
 # Cache
 *.npz
+
+# AI workflow / local tooling
+docs/superpowers/
+.claude/
+.python-version
+
+# Local scratch images
+*.jpg
+*.jpeg
+!tests/**/*.jpg
+!tests/**/*.jpeg
