@@ -48,7 +48,8 @@ class FidelityRenderer:
         rows_out = h // ch
         cols_out = w // cw
 
-        masks = (atlas.masks > 0.5).astype(np.float32)
+        masks_flat = (atlas.masks > 0.5).reshape(atlas.masks.shape[0], -1).astype(np.float32)
+        on_count = masks_flat.sum(axis=1)
 
         grid: Grid = []
         for cy in range(rows_out):
@@ -67,11 +68,18 @@ class FidelityRenderer:
                 # mask happens to align with.
                 bright_c, dark_c = _two_color_palette(patch_flat)
 
-                errors = np.empty(masks.shape[0], dtype=np.float32)
-                for gi in range(masks.shape[0]):
-                    m = masks[gi][..., None]
-                    recon = m * bright_c + (1.0 - m) * dark_c
-                    errors[gi] = float(((patch - recon) ** 2).sum())
+                # Vectorized SSE over glyphs. For binary masks m_g, the
+                # reconstruction error expands as
+                #   err[g] = const + on_count[g] * ||bright-dark||^2
+                #           - 2 * (masks_flat @ proj)[g]
+                # where proj = (patch - dark) @ (bright - dark). The const term
+                # is the same for all g and is dropped for the argmin.
+                diff_bd = bright_c - dark_c
+                diff_dark = patch_flat - dark_c
+                proj = diff_dark @ diff_bd
+                mv = masks_flat @ proj
+                d2 = float(diff_bd @ diff_bd)
+                errors = on_count * d2 - 2.0 * mv
                 best = int(errors.argmin())
 
                 ch_best = atlas.chars[best]
