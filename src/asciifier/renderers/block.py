@@ -12,6 +12,8 @@ class BlockRenderer:
     char_aspect: float = 1.0
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
+        if opts.invert:
+            img = 255 - img
         h, w, _ = img.shape
         if h % 2 == 1:
             img = np.concatenate([img, img[-1:]], axis=0)

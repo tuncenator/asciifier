@@ -25,6 +25,8 @@ class EdgeRenderer:
     char_aspect: float = 0.5
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
+        if opts.invert:
+            img = 255 - img
         lum = (0.2126 * img[..., 0] + 0.7152 * img[..., 1] + 0.0722 * img[..., 2]).astype(np.float32)
         gx = _conv2(lum, _SOBEL_X)
         gy = _conv2(lum, _SOBEL_Y)

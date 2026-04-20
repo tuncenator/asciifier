@@ -34,6 +34,8 @@ class FidelityRenderer:
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         atlas: Atlas = atlas_from_font(opts.font_path) if opts.font_path else default_atlas()
+        if opts.invert:
+            img = 255 - img
         cw, ch = atlas.cell_w, atlas.cell_h
         h, w, _ = img.shape
         pad_h = (ch - h % ch) % ch

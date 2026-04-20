@@ -10,12 +10,12 @@ class LuminanceRenderer:
     char_aspect: float = 0.5
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
+        if opts.invert:
+            img = 255 - img
         r = img[..., 0].astype(np.float32)
         g = img[..., 1].astype(np.float32)
         b = img[..., 2].astype(np.float32)
         lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-        if opts.invert:
-            lum = 255.0 - lum
 
         ramp = opts.ramp
         n = len(ramp) - 1

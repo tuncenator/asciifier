@@ -15,6 +15,8 @@ class BrailleRenderer:
     char_aspect: float = 0.25
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
+        if opts.invert:
+            img = 255 - img
         h, w, _ = img.shape
         pad_h = (4 - h % 4) % 4
         pad_w = (2 - w % 2) % 2
@@ -23,8 +25,6 @@ class BrailleRenderer:
             h, w = img.shape[:2]
 
         lum = (0.2126 * img[..., 0] + 0.7152 * img[..., 1] + 0.0722 * img[..., 2]) / 255.0
-        if opts.invert:
-            lum = 1.0 - lum
         on = lum > opts.threshold
 
         out_rows = h // 4
