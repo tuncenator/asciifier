@@ -9,7 +9,8 @@ UPPER_HALF = "\u2580"
 
 
 class BlockRenderer:
-    char_aspect: float = 1.0
+    char_aspect: float = 0.5
+    pixel_cell_size: tuple[int, int] = (1, 2)
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         if opts.invert:

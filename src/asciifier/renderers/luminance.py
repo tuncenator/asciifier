@@ -8,6 +8,7 @@ from asciifier.types import Cell, Grid
 
 class LuminanceRenderer:
     char_aspect: float = 0.5
+    pixel_cell_size: tuple[int, int] = (1, 1)
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         if opts.invert:

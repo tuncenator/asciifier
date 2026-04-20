@@ -20,5 +20,6 @@ class RenderOpts:
 
 class Renderer(Protocol):
     char_aspect: float
+    pixel_cell_size: tuple[int, int]
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid: ...

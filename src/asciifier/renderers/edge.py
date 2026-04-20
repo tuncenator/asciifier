@@ -23,6 +23,7 @@ def _conv2(a: NDArray[np.float32], k: NDArray[np.float32]) -> NDArray[np.float32
 
 class EdgeRenderer:
     char_aspect: float = 0.5
+    pixel_cell_size: tuple[int, int] = (1, 1)
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         if opts.invert:

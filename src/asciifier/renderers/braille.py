@@ -12,7 +12,8 @@ DOT_BITS: list[tuple[int, int, int]] = [
 
 
 class BrailleRenderer:
-    char_aspect: float = 0.25
+    char_aspect: float = 0.5
+    pixel_cell_size: tuple[int, int] = (2, 4)
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         if opts.invert:
