@@ -24,3 +24,15 @@ def test_half_split_image_produces_reasonable_split():
     cell = grid[0][0]
     assert cell.fg == (255, 255, 255)
     assert cell.bg == (0, 0, 0)
+
+
+def test_fidelity_perf_sanity():
+    import time
+    # 160x320 image = 20x20 cell grid for fidelity (8x16 per cell).
+    img = np.random.randint(0, 256, (320, 160, 3), dtype=np.uint8)
+    start = time.monotonic()
+    grid = FidelityRenderer().render(img, RenderOpts(color_mode="truecolor"))
+    elapsed = time.monotonic() - start
+    # 400 cells should take well under 5 seconds; set generous bound.
+    assert elapsed < 5.0, f"fidelity render took {elapsed:.2f}s (should be < 5s)"
+    assert len(grid) == 20 and len(grid[0]) == 20
