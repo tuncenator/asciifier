@@ -5,7 +5,7 @@ from asciifier.color import quantize
 from asciifier.renderers.base import RenderOpts
 from asciifier.types import Cell, Grid
 
-EDGE_CHARS = {0: "-", 1: "/", 2: "|", 3: "\\"}
+EDGE_CHARS = {0: "|", 1: "\\", 2: "-", 3: "/"}
 
 _SOBEL_X = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float32)
 _SOBEL_Y = _SOBEL_X.T
@@ -45,7 +45,7 @@ class EdgeRenderer:
             for x in range(w):
                 if mag[y, x] >= threshold:
                     a = ang[y, x]
-                    bucket = int(((a + np.pi) / np.pi * 2)) % 4
+                    bucket = int((a % np.pi) / (np.pi / 4)) % 4
                     ch = EDGE_CHARS[bucket]
                 else:
                     ch = ramp[int(lum_idx[y, x])]

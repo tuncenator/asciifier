@@ -18,3 +18,12 @@ def test_vertical_edge_produces_vertical_char():
     grid = EdgeRenderer().render(img, RenderOpts(color_mode="mono"))
     chars = {grid[y][x].char for y in range(1, 7) for x in (3, 4)}
     assert "|" in chars
+
+
+def test_horizontal_edge_produces_horizontal_char():
+    img = np.zeros((8, 8, 3), dtype=np.uint8)
+    img[4:, :] = 255
+    grid = EdgeRenderer().render(img, RenderOpts(color_mode="mono"))
+    # middle rows (3 or 4) center should be "-"
+    chars = {grid[y][x].char for y in (3, 4) for x in range(1, 7)}
+    assert "-" in chars
