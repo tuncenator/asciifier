@@ -57,3 +57,23 @@ def test_cli_preset_lineart_sets_edge_mode(fixtures_dir, tmp_path):
     )
     # Edge renderer in mono mode emits only ramp/edge chars, never truecolor escapes.
     assert "\x1b[38;2" not in result.stdout
+
+
+def test_cli_fidelity_fills_terminal(fixtures_dir):
+    # Force a known terminal size via COLUMNS/LINES so output is predictable.
+    import os
+    env = os.environ.copy()
+    env["COLUMNS"] = "80"
+    env["LINES"] = "24"
+    result = subprocess.run(
+        [sys.executable, "-m", "asciifier",
+         str(fixtures_dir / "small_rgb.png"),
+         "--mode", "fidelity", "--color", "mono"],
+        capture_output=True, text=True, check=True, env=env,
+    )
+    lines = [l for l in result.stdout.split("\n") if l]
+    # With 4x4 source and fidelity's 8x16 cell, resample produces
+    # (cols*8, rows*16) image. For 80-wide terminal and square source,
+    # char grid is at least several rows x several cols.
+    assert len(lines) >= 3, f"got {len(lines)} lines, expected >= 3"
+    assert max(len(l.rstrip()) for l in lines) >= 5

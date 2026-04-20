@@ -103,7 +103,8 @@ def main(argv: list[str] | None = None) -> int:
         char_aspect=renderer.char_aspect, scale=args.scale,
         width=args.width, height=args.height,
     )
-    resized = resample(img, cols=cols, rows=rows)
+    px_w, px_h = renderer.pixel_cell_size
+    resized = resample(img, cols=cols * px_w, rows=rows * px_h)
 
     try:
         grid = renderer.render(

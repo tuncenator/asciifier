@@ -30,7 +30,8 @@ def _two_color_palette(patch_flat: NDArray[np.float32]) -> tuple[NDArray[np.floa
 
 
 class FidelityRenderer:
-    char_aspect: float = 8.0 / 16.0
+    char_aspect: float = 0.5
+    pixel_cell_size: tuple[int, int] = (8, 16)
 
     def render(self, img: NDArray[np.uint8], opts: RenderOpts) -> Grid:
         atlas: Atlas = atlas_from_font(opts.font_path) if opts.font_path else default_atlas()
