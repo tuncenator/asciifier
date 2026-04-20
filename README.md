@@ -7,6 +7,16 @@ block elements, box drawing, braille -- and colors each cell with truecolor that
 stays faithful to the source pixels. Five rendering modes: `fidelity` (the
 default, max reproduction), plus `luminance`, `edge`, `block`, and `braille`.
 
+## Demo
+
+Source (`examples/yds.jpg`) rendered at `--width 100`:
+
+| fidelity | block | edge |
+|----------|-------|------|
+| ![fidelity](examples/yds-fidelity.png) | ![block](examples/yds-block.png) | ![edge](examples/yds-edge.png) |
+
+Each image above is a `--png` export of what the tool prints to your terminal.
+
 ## Install
 
 Requires Python 3.11+.
@@ -78,5 +88,6 @@ closer visual match:
 
 ## License
 
-MIT. Bundled font (`JetBrainsMono-Regular.ttf`) is distributed under the SIL
-Open Font License 1.1 -- see `src/asciifier/fonts/README.md`.
+MIT -- see [LICENSE](LICENSE). Bundled font (`JetBrainsMono-Regular.ttf`) is
+distributed under the SIL Open Font License 1.1 -- see
+[`src/asciifier/fonts/README.md`](src/asciifier/fonts/README.md).

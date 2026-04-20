@@ -32,3 +32,5 @@ docs/superpowers/
 *.jpeg
 !tests/**/*.jpg
 !tests/**/*.jpeg
+!examples/**/*.jpg
+!examples/**/*.jpeg
