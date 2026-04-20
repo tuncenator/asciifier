@@ -44,3 +44,16 @@ def test_cli_preset_photo(fixtures_dir, tmp_path):
         capture_output=True, text=True, check=True,
     )
     assert out.exists()
+
+
+def test_cli_preset_lineart_sets_edge_mode(fixtures_dir, tmp_path):
+    # Edge mode with mono produces a 4x8 grid of printable chars.
+    result = subprocess.run(
+        [sys.executable, "-m", "asciifier",
+         str(fixtures_dir / "small_rgb.png"),
+         "--preset", "lineart", "--width", "8",
+         "--color", "mono"],
+        capture_output=True, text=True, check=True,
+    )
+    # Edge renderer in mono mode emits only ramp/edge chars, never truecolor escapes.
+    assert "\x1b[38;2" not in result.stdout

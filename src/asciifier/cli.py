@@ -31,12 +31,12 @@ RENDERERS = {
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="asciifier", description="Image to character-art.")
     p.add_argument("image", type=Path, nargs="?", help="input image path")
-    p.add_argument("--mode", choices=list(RENDERERS), default="fidelity")
-    p.add_argument("--color", choices=["auto", "truecolor", "256", "mono"], default="auto")
+    p.add_argument("--mode", choices=list(RENDERERS), default=argparse.SUPPRESS)
+    p.add_argument("--color", choices=["auto", "truecolor", "256", "mono"], default=argparse.SUPPRESS)
     p.add_argument("--scale", type=float, default=1.0)
     p.add_argument("--width", type=int, default=None)
     p.add_argument("--height", type=int, default=None)
-    p.add_argument("--invert", action="store_true")
+    p.add_argument("--invert", action="store_true", default=argparse.SUPPRESS)
     p.add_argument("--font", type=Path, default=None)
     p.add_argument("--preset", choices=["photo", "lineart", "pixelart", "logo"], default=None)
     p.add_argument("--html", type=Path, default=None, metavar="PATH")
@@ -77,13 +77,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"size:  {caps.columns}x{caps.lines}")
         return 0
 
-    user_set = {a.dest for a in parser._actions if getattr(args, a.dest, None) not in (None, False, 1.0, "auto")}
-    flags = {"mode": args.mode, "color": args.color, "invert": args.invert}
+    preset_defaults = {"mode": "fidelity", "color": "auto", "invert": False}
+    user_set = {k for k in preset_defaults if hasattr(args, k)}
+    flags = {k: getattr(args, k, v) for k, v in preset_defaults.items()}
     if args.preset:
         flags = apply_preset(flags, args.preset, user_set=user_set)
     mode: str = flags["mode"]
     color_arg: str = flags["color"]
-    invert: bool = flags.get("invert", args.invert)
+    invert: bool = flags["invert"]
 
     if args.image is None:
         parser.error("image path required")
