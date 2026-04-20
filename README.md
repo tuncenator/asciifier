@@ -55,8 +55,12 @@ Common options:
 
 ### Color
 
-`--color` accepts `auto` (default), `truecolor`, `256`, or `mono`. In `auto`, the
-tool checks `COLORTERM` and `TERM` and picks the best option supported.
+`--color` accepts `auto` (default), `truecolor`, `256`, or `mono`. In `auto`,
+the tool checks `COLORTERM` and `TERM` and picks the best mode.
+
+The `256` mode quantizes RGB to the xterm 256-color palette and emits the
+quantized values as truecolor escapes. This renders correctly on terminals
+supporting either protocol; a strict 256-color-only terminal is not targeted.
 
 ### Custom font
 
